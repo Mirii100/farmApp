@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:provider/provider.dart';
-import '../../../../core/constants/colors.dart';
-import '../../../ai/presentation/providers/ai_advisor_provider.dart';
+import 'package:shambabook/core/constants/colors.dart';
+import '../providers/finance_provider.dart';
 
 class FinancePage extends StatelessWidget {
   const FinancePage({super.key});
@@ -19,32 +19,98 @@ class FinancePage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildProfitLossCard(),
-            const SizedBox(height: 24),
-            _buildSectionTitle('Smart Analytics'),
-            const SizedBox(height: 12),
-            _buildAnalyticsCharts(context),
-            const SizedBox(height: 20),
-            _buildYieldTrendCard(context),
-            const SizedBox(height: 24),
-            _buildSectionTitle('Mobile Money Integration'),
-            const SizedBox(height: 12),
-            _buildMpesaCard(),
-            const SizedBox(height: 24),
-            _buildSectionTitle('Recent Transactions'),
-            const SizedBox(height: 12),
-            _buildTransactionList(),
-          ],
+        child: Consumer<FinanceProvider>(
+          builder: (context, provider, child) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildProfitLossCard(provider),
+              const SizedBox(height: 24),
+              _buildSectionTitle('Smart Analytics'),
+              const SizedBox(height: 12),
+              _buildAnalyticsCharts(context),
+              const SizedBox(height: 20),
+              _buildYieldTrendCard(context),
+              const SizedBox(height: 24),
+              _buildSectionTitle('Mobile Money Integration'),
+              const SizedBox(height: 12),
+              _buildMpesaCard(),
+              const SizedBox(height: 24),
+              _buildSectionTitle('Recent Transactions'),
+              const SizedBox(height: 12),
+              _buildTransactionList(provider),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () => _showAddTransactionDialog(context),
         backgroundColor: AppColors.primaryGreen,
         icon: const Icon(TablerIcons.plus, color: Colors.white),
         label: const Text('Add Transaction', style: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+
+  void _showAddTransactionDialog(BuildContext context) {
+    final titleController = TextEditingController();
+    final amountController = TextEditingController();
+    bool isIncome = true;
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Text('New Transaction', style: TextStyle(fontFamily: 'Fraunces')),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: ChoiceChip(
+                      label: const Text('Income'),
+                      selected: isIncome,
+                      onSelected: (val) => setDialogState(() => isIncome = true),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: ChoiceChip(
+                      label: const Text('Expense'),
+                      selected: !isIncome,
+                      onSelected: (val) => setDialogState(() => isIncome = false),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              TextField(controller: titleController, decoration: const InputDecoration(hintText: 'Description (e.g. Sale of Milk)')),
+              const SizedBox(height: 12),
+              TextField(
+                controller: amountController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(hintText: 'Amount (KSh)', prefixText: 'KSh '),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+            ElevatedButton(
+              onPressed: () {
+                if (titleController.text.isNotEmpty && amountController.text.isNotEmpty) {
+                  context.read<FinanceProvider>().addTransaction(Transaction(
+                        title: titleController.text,
+                        amount: 'KSh ${amountController.text}',
+                        date: 'Today',
+                        isIncome: isIncome,
+                      ));
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text('Record'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -56,7 +122,7 @@ class FinancePage extends StatelessWidget {
     );
   }
 
-  Widget _buildProfitLossCard() {
+  Widget _buildProfitLossCard(FinanceProvider provider) {
     return Card(
       color: AppColors.primaryGreen,
       child: Padding(
@@ -65,17 +131,17 @@ class FinancePage extends StatelessWidget {
           children: [
             const Text('Net Profit — Season A 2026', style: TextStyle(color: Colors.white70, fontSize: 12)),
             const SizedBox(height: 8),
-            const Text(
-              'KSh 42,500',
-              style: TextStyle(fontFamily: 'Fraunces', fontSize: 28, fontWeight: FontWeight.w700, color: Colors.white),
+            Text(
+              provider.netProfit,
+              style: const TextStyle(fontFamily: 'Fraunces', fontSize: 28, fontWeight: FontWeight.w700, color: Colors.white),
             ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildPLStat('Income', 'KSh 68K', Colors.greenAccent),
+                _buildPLStat('Income', provider.totalIncome, Colors.greenAccent),
                 Container(width: 1, height: 30, color: Colors.white24),
-                _buildPLStat('Expenses', 'KSh 25.5K', Colors.orangeAccent),
+                _buildPLStat('Expenses', provider.totalExpenses, Colors.orangeAccent),
               ],
             ),
           ],
@@ -218,13 +284,11 @@ class FinancePage extends StatelessWidget {
     );
   }
 
-  Widget _buildTransactionList() {
+  Widget _buildTransactionList(FinanceProvider provider) {
     return Column(
-      children: [
-        _buildTransactionItem('Sale: Maize 500kg', '+ KSh 15,000', 'May 8, 2026', true),
-        _buildTransactionItem('M-Pesa: Fertilizer', '- KSh 3,200', 'May 7, 2026', false),
-        _buildTransactionItem('Labor: Weeding', '- KSh 1,500', 'May 6, 2026', false),
-      ],
+      children: provider.transactions
+          .map((t) => _buildTransactionItem(t.title, t.amount, t.date, t.isIncome))
+          .toList(),
     );
   }
 

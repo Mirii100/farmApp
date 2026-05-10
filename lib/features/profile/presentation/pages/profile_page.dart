@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import '../../../../core/constants/colors.dart';
+import 'package:shambabook/core/constants/colors.dart';
+import 'package:shambabook/features/auth/presentation/pages/login_screen.dart';
+import 'design_system_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -170,13 +172,17 @@ class ProfilePage extends StatelessWidget {
       children: [
         _buildSettingsItem(TablerIcons.language, 'Language: Kiswahili'),
         _buildSettingsItem(TablerIcons.bell, 'Notifications'),
-        _buildSettingsItem(TablerIcons.credit_card, 'M-Pesa connected', trailing: _buildActiveTag()),
-import '../../auth/presentation/pages/login_screen.dart';
-
-...
-
+        _buildSettingsItem(TablerIcons.credit_card, 'M-Pesa connected',
+            trailing: _buildActiveTag()),
+        _buildSettingsItem(TablerIcons.palette, 'Design System', onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const DesignSystemPage()),
+          );
+        }),
         _buildSettingsItem(TablerIcons.help, 'Help & support'),
-        _buildSettingsItem(TablerIcons.logout, 'Sign out', isDestructive: true, onTap: () {
+        _buildSettingsItem(TablerIcons.logout, 'Sign out',
+            isDestructive: true, onTap: () {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const LoginScreen()),

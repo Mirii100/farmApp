@@ -52,11 +52,86 @@ class _SchedulePageState extends State<SchedulePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: Show dialog to add new reminder
-        },
+        onPressed: () => _showAddReminderDialog(context),
         backgroundColor: AppColors.primaryGreen,
         child: const Icon(TablerIcons.plus, color: Colors.white),
+      ),
+    );
+  }
+
+  void _showAddReminderDialog(BuildContext context) {
+    final titleController = TextEditingController();
+    final descController = TextEditingController();
+    DateTime selectedDate = DateTime.now();
+    ReminderType selectedType = ReminderType.other;
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Text('Add New Task', style: TextStyle(fontFamily: 'Fraunces')),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Title', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                TextField(controller: titleController, decoration: const InputDecoration(hintText: 'e.g. Harvest Maize')),
+                const SizedBox(height: 12),
+                const Text('Description', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                TextField(controller: descController, decoration: const InputDecoration(hintText: 'e.g. Field A and B')),
+                const SizedBox(height: 12),
+                const Text('Task Type', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                DropdownButtonFormField<ReminderType>(
+                  value: selectedType,
+                  items: ReminderType.values.map((type) {
+                    return DropdownMenuItem(
+                      value: type,
+                      child: Text(type.name[0].toUpperCase() + type.name.substring(1)),
+                    );
+                  }).toList(),
+                  onChanged: (val) => setDialogState(() => selectedType = val!),
+                ),
+                const SizedBox(height: 12),
+                const Text('Date', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                OutlinedButton.icon(
+                  onPressed: () async {
+                    final picked = await showDatePicker(
+                      context: context,
+                      initialDate: selectedDate,
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime.now().add(const Duration(days: 365)),
+                    );
+                    if (picked != null) setDialogState(() => selectedDate = picked);
+                  },
+                  icon: const Icon(TablerIcons.calendar, size: 18),
+                  label: Text(DateFormat('MMM dd, yyyy').format(selectedDate)),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+            ElevatedButton(
+              onPressed: () {
+                if (titleController.text.isNotEmpty) {
+                  context.read<ReminderProvider>().addReminder(Reminder(
+                        title: titleController.text,
+                        description: descController.text,
+                        scheduledDate: selectedDate,
+                        type: selectedType,
+                      ));
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text('Add Task'),
+            ),
+          ],
+        ),
       ),
     );
   }
