@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import '../../../../core/constants/colors.dart';
-import '../../dashboard/presentation/pages/dashboard_screen.dart';
+import '../../../dashboard/presentation/pages/dashboard_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});

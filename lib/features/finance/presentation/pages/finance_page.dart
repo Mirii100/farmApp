@@ -3,7 +3,7 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/constants/colors.dart';
-import '../../ai/presentation/providers/ai_advisor_provider.dart';
+import '../../../ai/presentation/providers/ai_advisor_provider.dart';
 
 class FinancePage extends StatelessWidget {
   const FinancePage({super.key});
@@ -30,46 +30,6 @@ class FinancePage extends StatelessWidget {
             const SizedBox(height: 20),
             _buildYieldTrendCard(context),
             const SizedBox(height: 24),
-...
-  Widget _buildYieldTrendCard(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Text('Yield Trend (Tons/Season)', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-            const SizedBox(height: 24),
-            SizedBox(
-              height: 120,
-              child: LineChart(
-                LineChartData(
-                  gridData: const FlGridData(show: false),
-                  titlesData: const FlTitlesData(show: false),
-                  borderData: FlBorderData(show: false),
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: const [
-                        FlSpot(0, 1.2),
-                        FlSpot(1, 1.8),
-                        FlSpot(2, 1.5),
-                        FlSpot(3, 2.2),
-                        FlSpot(4, 2.8),
-                      ],
-                      isCurved: true,
-                      color: AppColors.primaryGreen,
-                      barWidth: 3,
-                      dotData: const FlDotData(show: true),
-                      belowBarData: BarAreaData(show: true, color: AppColors.primaryGreen.withOpacity(0.1)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
             _buildSectionTitle('Mobile Money Integration'),
             const SizedBox(height: 12),
             _buildMpesaCard(),
@@ -158,6 +118,46 @@ class FinancePage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             _buildChartLegend(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildYieldTrendCard(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            const Text('Yield Trend (Tons/Season)', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+            const SizedBox(height: 24),
+            SizedBox(
+              height: 120,
+              child: LineChart(
+                LineChartData(
+                  gridData: const FlGridData(show: false),
+                  titlesData: const FlTitlesData(show: false),
+                  borderData: FlBorderData(show: false),
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: const [
+                        FlSpot(0, 1.2),
+                        FlSpot(1, 1.8),
+                        FlSpot(2, 1.5),
+                        FlSpot(3, 2.2),
+                        FlSpot(4, 2.8),
+                      ],
+                      isCurved: true,
+                      color: AppColors.primaryGreen,
+                      barWidth: 3,
+                      dotData: const FlDotData(show: true),
+                      belowBarData: BarAreaData(show: true, color: AppColors.primaryGreen.withOpacity(0.1)),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

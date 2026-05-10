@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import '../../../../core/constants/colors.dart';
-import '../../dashboard/presentation/pages/dashboard_screen.dart';
+import '../../../dashboard/presentation/pages/dashboard_screen.dart';
 import '../widgets/auth_widgets.dart';
 import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
@@ -200,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onPressed: () {
+                        onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => const SignupScreen()),

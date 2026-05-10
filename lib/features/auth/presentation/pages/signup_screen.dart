@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import '../../../../core/constants/colors.dart';
-import '../../onboarding/presentation/pages/onboarding_screen.dart';
+import '../../../onboarding/presentation/pages/onboarding_screen.dart';
 import '../widgets/auth_widgets.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -251,7 +251,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onPressed: () {
+                        onTap: () {
                           Navigator.pop(context);
                         },
                         child: const Text(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../ai/presentation/providers/voice_provider.dart';
 
 class RecordsPage extends StatelessWidget {
   const RecordsPage({super.key});
@@ -65,7 +67,6 @@ class RecordsPage extends StatelessWidget {
                 fontSize: 11,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
-                textBaseline: TextBaseline.alphabetic,
               ),
             ),
             const SizedBox(height: 8),
@@ -87,9 +88,6 @@ class RecordsPage extends StatelessWidget {
           ],
         ),
       ),
-import 'package:provider/provider.dart';
-import '../../ai/presentation/providers/voice_provider.dart';
-...
       floatingActionButton: Consumer<VoiceProvider>(
         builder: (context, voiceProvider, child) {
           return FloatingActionButton.extended(
@@ -116,7 +114,6 @@ import '../../ai/presentation/providers/voice_provider.dart';
           );
         },
       ),
-...
     );
   }
 

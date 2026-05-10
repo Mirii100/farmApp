@@ -146,7 +146,7 @@ class _SchedulePageState extends State<SchedulePage> {
         color = AppColors.secondaryGreen;
         break;
       case ReminderType.vaccination:
-        icon = TablerIcons.cow;
+        icon = TablerIcons.vaccine;
         color = AppColors.amberAlert;
         break;
       default:

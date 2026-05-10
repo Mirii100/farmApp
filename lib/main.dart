@@ -4,6 +4,7 @@ import 'core/theme/app_theme.dart';
 import 'features/auth/presentation/pages/login_screen.dart';
 import 'features/scheduling/presentation/providers/reminder_provider.dart';
 
+import 'core/utils/connectivity_provider.dart';
 import 'features/ai/presentation/providers/voice_provider.dart';
 import 'features/ai/presentation/providers/ai_advisor_provider.dart';
 
@@ -11,15 +12,15 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => ConnectivityProvider()),
         ChangeNotifierProvider(create: (_) => ReminderProvider()..checkAndSeedDemoData()),
         ChangeNotifierProvider(create: (_) => VoiceProvider()..init()),
-        ChangeNotifierProvider(create: (_) => AiAdvisorProvider()),
+        ChangeNotifierProvider(create: (context) => AiAdvisorProvider()..updateWeather('Nairobi')),
       ],
       child: const ShambaBookApp(),
     ),
   );
 }
-...
 
 class ShambaBookApp extends StatelessWidget {
   const ShambaBookApp({super.key});

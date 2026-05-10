@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import '../../../../core/constants/colors.dart';
-import '../../home/presentation/pages/home_page.dart';
-import '../../records/presentation/pages/records_page.dart';
-import '../../finance/presentation/pages/finance_page.dart';
-import '../../reports/presentation/pages/reports_page.dart';
-import '../../ai/presentation/pages/ai_page.dart';
+import '../../../home/presentation/pages/home_page.dart';
+import '../../../records/presentation/pages/records_page.dart';
+import '../../../finance/presentation/pages/finance_page.dart';
+import '../../../reports/presentation/pages/reports_page.dart';
+import '../../../ai/presentation/pages/ai_page.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import '../../../../core/constants/colors.dart';
-import '../../profile/presentation/pages/profile_page.dart';
-import '../../scheduling/presentation/pages/schedule_page.dart';
+import '../../../profile/presentation/pages/profile_page.dart';
+import '../../../scheduling/presentation/pages/schedule_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -188,7 +188,7 @@ class HomePage extends StatelessWidget {
         _buildActivityItem(
           'Cow Vaccination',
           'In 7 days · FMD Booster',
-          TablerIcons.cow,
+          TablerIcons.vaccine,
           AppColors.amberAlert,
         ),
       ],

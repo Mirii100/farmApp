@@ -171,33 +171,46 @@ class ProfilePage extends StatelessWidget {
         _buildSettingsItem(TablerIcons.language, 'Language: Kiswahili'),
         _buildSettingsItem(TablerIcons.bell, 'Notifications'),
         _buildSettingsItem(TablerIcons.credit_card, 'M-Pesa connected', trailing: _buildActiveTag()),
+import '../../auth/presentation/pages/login_screen.dart';
+
+...
+
         _buildSettingsItem(TablerIcons.help, 'Help & support'),
-        _buildSettingsItem(TablerIcons.logout, 'Sign out', isDestructive: true),
+        _buildSettingsItem(TablerIcons.logout, 'Sign out', isDestructive: true, onTap: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+            (route) => false,
+          );
+        }),
       ],
     );
   }
 
-  Widget _buildSettingsItem(IconData icon, String title, {Widget? trailing, bool isDestructive = false}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: AppColors.border, width: 0.5)),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: isDestructive ? AppColors.dangerRed : AppColors.textTertiary, size: 18),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              title,
-              style: TextStyle(
-                fontSize: 13,
-                color: isDestructive ? AppColors.dangerRed : AppColors.textPrimary,
+  Widget _buildSettingsItem(IconData icon, String title, {Widget? trailing, bool isDestructive = false, VoidCallback? onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: AppColors.border, width: 0.5)),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: isDestructive ? AppColors.dangerRed : AppColors.textTertiary, size: 18),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: isDestructive ? AppColors.dangerRed : AppColors.textPrimary,
+                ),
               ),
             ),
-          ),
-          trailing ?? const Icon(TablerIcons.chevron_right, color: AppColors.textQuaternary, size: 16),
-        ],
+            trailing ?? const Icon(TablerIcons.chevron_right, color: AppColors.textQuaternary, size: 16),
+          ],
+        ),
       ),
     );
   }
